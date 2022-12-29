@@ -168,11 +168,10 @@ def _dynamize_fields(
 
         # overwrite stuff that has been inputted in the init function
         for name, value in del_from_kwargs:
-            if not isinstance(value, DynamicField):
-                raise ValueError(
-                    f"Dynamic field {name} should be of type DynamicField, try out dycode.wrappers.field({value})"
-                )
-            setattr(self, name, value.value)
+            if isinstance(value, DynamicField):
+                setattr(self, name, value.value)
+            else:
+                setattr(self, name, value)
 
         # init should return None by convention
         return None
